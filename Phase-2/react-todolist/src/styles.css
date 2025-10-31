@@ -1,0 +1,180 @@
+/* body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background: #0077ff;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+}
+
+.header nav a {
+  color: white;
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header nav a.active {
+  border-bottom: 2px solid yellow;
+}
+
+.main {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.page h2 {
+  color: #0077ff;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-form input,
+.task-form textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.task-form button {
+  padding: 10px;
+  background: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.task-item {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.task-item.completed {
+  background: #e6ffe6;
+  text-decoration: line-through;
+}
+
+.task-actions button {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.empty {
+  text-align: center;
+  color: gray;
+  margin-top: 20px;
+} */
+
+
+/* src/styles.css */
+
+/* General Layout */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  color: #333;
+}
+
+.main {
+  padding: 20px;
+}
+
+/* Home Page */
+.home-page {
+  text-align: center;
+}
+
+.home-page h1 {
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  justify-content: center;
+}
+
+.task-card {
+  background: white;
+  color: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s ease-in-out;
+  text-align: center;
+}
+
+.task-card:hover {
+  transform: scale(1.05);
+}
+
+.task-card-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+/* Header */
+.header {
+  background: #222;
+  padding: 15px;
+  text-align: center;
+}
+
+.header a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.header a.active {
+  text-decoration: underline;
+}
+
+/* Task List */
+.task-list {
+  margin-top: 20px;
+}
+
+.task-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-actions button {
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  background: #eee;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+.task-actions button:hover {
+  background: #ccc;
+}
