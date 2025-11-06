@@ -1,35 +1,21 @@
-// import React from 'react'
-// import CalculatorTemplate from './_CalculatorTemplate'
-
-// export default function Division() {
-//   return (
-//     <CalculatorTemplate
-//       opName="Division"
-//       opSymbol="÷"
-//       operate={(a, b) => (b === 0 ? 'Cannot divide by 0' : a / b)}
-//     />
-//   )
-// }
-
-
 // import React, { useState } from "react";
-// import NumberPad from "../components/NumberPad";
+// import CalculatorPad from "../components/CalculatorPad";
+// import { useHistoryData } from "../context/HistoryContext";
 
 // export default function Division() {
 //   const [input, setInput] = useState("");
 //   const [result, setResult] = useState(null);
+//   const { addToHistory } = useHistoryData();
 
 //   const handleNumberClick = (num) => setInput((prev) => prev + num);
-//   const handleClear = () => {
-//     setInput("");
-//     setResult(null);
-//   };
+//   const handleClear = () => { setInput(""); setResult(null); };
 
 //   const handleEqual = () => {
 //     try {
 //       const numbers = input.split("/").map(Number);
-//       const quotient = numbers.reduce((a, b) => a / b);
-//       setResult(quotient);
+//       const div = numbers.reduce((a, b) => a / b);
+//       setResult(div);
+//       addToHistory("Division", input, div);
 //     } catch {
 //       setResult("Error");
 //     }
@@ -37,49 +23,133 @@
 
 //   return (
 //     <div className="calc-page">
-//       <h2>Division</h2>
+//       <h2>➗ Division</h2>
 //       <div className="calc-display">{result !== null ? result : input || "0"}</div>
-//       <button className="operator" onClick={() => setInput((prev) => prev + "/")}>
-//         ÷
-//       </button>
-//       <NumberPad onNumberClick={handleNumberClick} onClear={handleClear} onEqual={handleEqual} />
+//       <div className="operators">
+//         <button onClick={() => setInput((prev) => prev + "/")}>÷</button>
+//       </div>
+//       <CalculatorPad onNumberClick={handleNumberClick} onClear={handleClear} onEqual={handleEqual} />
 //     </div>
 //   );
 // }
 
-
-import React, { useState } from "react";
+// Method 2
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import CalculatorPad from "../components/CalculatorPad";
 import { useHistoryData } from "../context/HistoryContext";
+import "./CalculatorPages.css"; // make sure this exists
+
 
 export default function Division() {
-  const [input, setInput] = useState("");
-  const [result, setResult] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { addToHistory } = useHistoryData();
 
-  const handleNumberClick = (num) => setInput((prev) => prev + num);
-  const handleClear = () => { setInput(""); setResult(null); };
+  const [input, setInput] = useState(location.state?.input || "");
+  const [result, setResult] = useState(null);
 
-  const handleEqual = () => {
-    try {
-      const numbers = input.split("/").map(Number);
-      const div = numbers.reduce((a, b) => a / b);
-      setResult(div);
-      addToHistory("Division", input, div);
-    } catch {
-      setResult("Error");
+  useEffect(() => {
+    if (location.state?.input) {
+      setInput(location.state.input);
     }
+  }, [location.state]);
+
+  const handleNumberClick = (num) => setInput((prev) => prev + num);
+
+  const handleClear = () => {
+    setInput("");
+    setResult(null);
+  };
+
+  // 
+  const handleEqual = () => {
+  try {
+    // Split numbers and operators using regex
+    const tokens = input.match(/(\d+\.?\d*|[+\-*/])/g);
+    if (!tokens) {
+      setResult("Error");
+      return;
+    }
+
+    let total = parseFloat(tokens[0]);
+    for (let i = 1; i < tokens.length; i += 2) {
+      const op = tokens[i];
+      const nextNum = parseFloat(tokens[i + 1]);
+      switch (op) {
+        case "+": total = total + nextNum; break;
+        case "-": total = total - nextNum; break;
+        case "*": total = total * nextNum; break;
+        case "/": total = total / nextNum; break;
+        default: break;
+      }
+    }
+
+    setResult(total);
+    addToHistory("Calculation", input, total);
+  } catch {
+    setResult("Error");
+  }
+};
+
+
+  const goToOperation = (operation) => {
+    navigate(`/${operation}`, { state: { input } });
   };
 
   return (
+    // <div className="calc-page">
+    //   <h2>➗ Division</h2>
+    //   <div className="calc-display">
+    //     {result !== null ? result : input || "0"}
+    //   </div>
+
+    //   <div className="calc-body">
+    //     {/* Left side: number pad */}
+    //     <div className="pad-section">
+    //       <CalculatorPad
+    //         onNumberClick={handleNumberClick}
+    //         onClear={handleClear}
+    //         onEqual={handleEqual}
+    //       />
+    //     </div>
+
+    //     {/* Right side: operator buttons */}
+    //     <div className="side-buttons">
+    //       <button onClick={() => goToOperation("addition")}>➕</button>
+    //       <button onClick={() => goToOperation("subtraction")}>➖</button>
+    //       <button onClick={() => goToOperation("multiplication")}>✖️</button>
+    //     </div>
+    //   </div>
+    // </div>
+
     <div className="calc-page">
-      <h2>➗ Division</h2>
-      <div className="calc-display">{result !== null ? result : input || "0"}</div>
-      <div className="operators">
-        <button onClick={() => setInput((prev) => prev + "/")}>÷</button>
-      </div>
-      <CalculatorPad onNumberClick={handleNumberClick} onClear={handleClear} onEqual={handleEqual} />
-    </div>
+          <h2>➗ Division</h2>
+          <div className="calc-display">
+            {result !== null ? result : input || "0"}
+          </div>
+    
+          <div className="calc-body">
+            {/* Number pad section */}
+            <div className="pad-section">
+              <div className="operators">
+                <button onClick={() => setInput((prev) => prev + "/")}>/</button>
+              </div>
+    
+              <CalculatorPad
+                onNumberClick={handleNumberClick}
+                onClear={handleClear}
+                onEqual={handleEqual}
+              />
+            </div>
+    
+            {/* Side buttons to navigate */}
+            <div className="side-buttons">
+              <button onClick={() => goToOperation("subtraction")}>➖</button>
+              <button onClick={() => goToOperation("multiplication")}>✖️</button>
+              <button onClick={() => goToOperation("addition")}>➕</button>
+            </div>
+          </div>
+        </div>
   );
 }
-

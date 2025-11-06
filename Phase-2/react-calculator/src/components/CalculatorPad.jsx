@@ -24,5 +24,7 @@ export default function CalculatorPad({ onNumberClick, onClear, onEqual }) {
         </button>
       ))}
     </div>
+
+    
   );
 }
